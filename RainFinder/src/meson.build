@@ -1,8 +1,9 @@
 # Source files
 src_files = files(
     'main.cpp',
-    'HTTPController.cpp'
+    'HTTPController.cpp',
+    'APIHandler.cpp'
 )
 
 # Create executable
-executable('Rainfinder', src_files)
+executable('Rainfinder', src_files, include_directories: inc)

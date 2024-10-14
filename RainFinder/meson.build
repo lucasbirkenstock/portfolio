@@ -1,4 +1,7 @@
 project('RainFinder', 'cpp')
 
-# Define executable to build
-executable('RainFinder', 'main.cpp')
+# Set up include directories
+include_directories('include')
+
+# Set up source file subdirectory
+subdir('src')

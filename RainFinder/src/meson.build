@@ -6,4 +6,4 @@ src_files = files(
 )
 
 # Create executable
-executable('Rainfinder', src_files, include_directories: inc)
+executable('Rainfinder', src_files, include_directories: inc, dependencies: [dependency('boost'), dependency('openssl')])

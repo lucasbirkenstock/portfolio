@@ -1,3 +1,4 @@
+#pragma once
 #include "HTTPController.h"
 #include "APIHandler.h"
 #include "Coordinate.h"

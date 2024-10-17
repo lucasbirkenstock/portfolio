@@ -34,7 +34,7 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
         // Format GET request
         std::string lat = std::to_string(coords.latitude);
         std::string lon = std::to_string(coords.longitude);
-        std::string target = "/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + m_apiKey;
+        std::string target = "/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + m_apiKey + "&units=imperial";
         
         boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, 11};
         req.set(boost::beast::http::field::host, "api.openweathermap.org");
@@ -55,10 +55,51 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
         // Print response
         std::cout << resp << std::endl;
 
+        // Parse response using nlohmannjson
+        nlohmann::json jsonResp = nlohmann::json::parse(resp.body());
 
+        // Extract useful fields
+        if (jsonResp.contains("weather") && !jsonResp["weather"].empty())
+        {
+            info.weatherType = jsonResp["weather"][0]["main"];
+            info.weatherDescription = jsonResp["weather"][0]["description"];
 
-        // TODO: Parse response and fill out info var
+            if (info.weatherType == "Rain") 
+            {
+                info.isRaining = true;
+            }
+            else 
+            {
+                info.isRaining = false;
+            }
+            std::cout << std::endl << "Weather type is " << info.weatherType << ", specifically " << info.weatherDescription << std::endl;
+        }
 
+        if (jsonResp.contains("main") && !jsonResp["main"].empty())
+        {
+            info.temperature = jsonResp["main"]["temp"];
+            std::cout << "Temp is: " << info.temperature << std::endl; 
+        }
+
+        if (jsonResp.contains("coord") && !jsonResp["coord"].empty())
+        {
+            info.coordinates = Coordinate(jsonResp["coord"]["lon"], jsonResp["coord"]["lat"]);
+            std::cout << "Coordinates are: Lon = " << info.coordinates.longitude << ", Lat = " << info.coordinates.latitude << std::endl;
+        }
+
+        if (jsonResp.contains("name"))
+        {
+            if (jsonResp["name"] == "")
+            {
+                info.cityName = "No city name";
+            }
+            else 
+            {
+                info.cityName = jsonResp["name"];
+            }
+
+            std::cout << "The city of : " << info.cityName << std::endl;
+        }
 
 
         // Close SSL stream
@@ -76,7 +117,7 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
 
     } catch (const std::exception& e)
     {
-
+        std::cerr << "Error: " << e.what() << std::endl;
     }
     return info;
 }

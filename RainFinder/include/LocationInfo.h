@@ -3,10 +3,10 @@
 
 struct LocationInfo
 {
-    bool isRaining;
-    Coordinate coordinates;
-    std::string cityName;
-    std::string cloudLevel;
-    std::string rainLevel;
-    double temperature;
+    bool isRaining = false;
+    std::string weatherType = "Unknown";
+    std::string weatherDescription = "Unknown";
+    Coordinate coordinates = Coordinate();
+    std::string cityName = "Unknown";
+    double temperature = 0.00;
 };

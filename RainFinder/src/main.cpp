@@ -9,9 +9,10 @@ std::cout << "Project start" << std::endl;
 
 APIHandler handler = APIHandler();
 
-Coordinate csusm = Coordinate(-117.1587, 33.1298);
-Coordinate portoAlegre = Coordinate(-51.2090, -30.0368);
+//Coordinate csusm = Coordinate(-117.1587, 33.1298);
+//Coordinate portoAlegre = Coordinate(-51.2090, -30.0368);
+// handler.checkCoordinatesForRain(portoAlegre);
 
-handler.checkCoordinatesForRain(portoAlegre);
+handler.checkCoordinatesForRain(handler.getCoordinatesFromIP("127.0.0.1"));
 return 0;
 }

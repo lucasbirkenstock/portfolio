@@ -18,12 +18,18 @@ class APIHandler
     // Temporary: API key
     std::string m_apiKey = "";
 
-    // Makes API request to IP-API to convert user's IP to GPS coordinates
+    /*!
+    * @brief Makes API request to IP-API to convert user's IP to GPS coordinates
+    * @param[in] userIP User's IP to convert to GPS coordinates
+    * @return    Coordinate struct
+    */
     Coordinate getCoordinatesFromIP(const std::string &userIP);
 
-    // Makes API request to openweatherAPI for one set of coordinates. Fills out Locationinfo struct with response and returns the struct. 
+    // 
+    /*!
+    * @brief Makes API request to openweatherAPI for one set of coordinates. Fills out Locationinfo struct with response and returns the struct. 
+    * @param[in] coords Coordinate struct containing longitude and latitude for openweatherapi to check.
+    * @return    LocationInfo struct
+    */
     LocationInfo checkCoordinatesForRain(const Coordinate &coords);
-
-    // Parse JSON response to fill out Locationinfo struct
-    LocationInfo parseJsonResponse(boost::beast::http::response<boost::beast::http::string_body> response);
 };

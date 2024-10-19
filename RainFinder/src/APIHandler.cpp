@@ -1,22 +1,14 @@
 #pragma once
 #include "APIHandler.h"
 
-Coordinate APIHandler::getCoordinatesFromIP(const std::string &userIP)
-{
-    Coordinate example;
-    example.latitude = 1;
-    example.longitude = 1;
-    (void) userIP;
-    return example;
-}
-
 LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
 {
     LocationInfo info;
     try 
     {
-        // Set up SSL context because openWeatherApi uses HTTPS
         boost::asio::io_context ioContext;
+
+        // Set up SSL context because openWeatherApi uses HTTPS
         boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23_client);
 
         // Get IP from url
@@ -120,4 +112,71 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
         std::cerr << "Error: " << e.what() << std::endl;
     }
     return info;
+}
+
+Coordinate APIHandler::getCoordinatesFromIP(const std::string &userIP)
+{
+    Coordinate coord = Coordinate();
+    // Example req: http://ip-api.com/json/{query}?fields=status,message,lat,lon
+
+    try 
+    {
+        // Get IP from web address
+        boost::asio::io_context ioContext; 
+        boost::asio::ip::tcp::resolver resolver(ioContext); 
+        auto const results = resolver.resolve("ip-api.com", "80");
+
+        // Create socket
+        boost::asio::ip::tcp::socket socket(ioContext);
+
+        // Connect socket to resolved web address
+        boost::asio::connect(socket, results.begin(), results.end());
+
+        // Formulate the HTTP request
+        std::string target = "/json/" + userIP + "?fields=status,message,lat,lon";
+        boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, 11};
+        req.set(boost::beast::http::field::host, "ip-api.com");
+        req.set(boost::beast::http::field::user_agent, BOOST_BEAST_VERSION_STRING);
+
+        // Send the HTTP request
+        boost::beast::http::write(socket, req);
+
+        // Buffer to store resp
+        boost::beast::flat_buffer buffer;
+
+        // Container to hold HTTP resp
+        boost::beast::http::response<boost::beast::http::string_body> resp;
+
+        // Receive the response
+        boost::beast::http::read(socket, buffer, resp);
+
+        std::cout << resp << std::endl;
+
+
+        // Parse response using nlohmannjson
+        nlohmann::json jsonResp = nlohmann::json::parse(resp.body());
+
+        // Extract useful fields
+        if (jsonResp.contains("lat") && !jsonResp["lat"].empty())
+        {
+            coord.latitude = jsonResp["lat"];
+            std::cout << "LATITUDE FROM IP: " << coord.latitude << std::endl;
+
+        }
+
+        if (jsonResp.contains("lon") && !jsonResp["lon"].empty())
+        {
+            coord.longitude = jsonResp["lon"];
+            std::cout << "LONGITUDE FROM IP: " << coord.longitude << std::endl;
+
+        }
+
+
+
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    return coord;
 }

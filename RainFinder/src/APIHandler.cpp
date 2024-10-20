@@ -1,9 +1,10 @@
 #pragma once
 #include "APIHandler.h"
+#include <cmath>
 
 LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
 {
-    LocationInfo info;
+    LocationInfo info = LocationInfo();
     try 
     {
         boost::asio::io_context ioContext;
@@ -44,8 +45,8 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
         // Receive the response
         boost::beast::http::read(stream, buffer, resp);
 
-        // Print response
-        std::cout << resp << std::endl;
+        // Print raw response
+        // std::cout << resp << std::endl;
 
         // Parse response using nlohmannjson
         nlohmann::json jsonResp = nlohmann::json::parse(resp.body());
@@ -117,7 +118,6 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
 Coordinate APIHandler::getCoordinatesFromIP(const std::string &userIP)
 {
     Coordinate coord = Coordinate();
-    // Example req: http://ip-api.com/json/{query}?fields=status,message,lat,lon
 
     try 
     {
@@ -179,4 +179,48 @@ Coordinate APIHandler::getCoordinatesFromIP(const std::string &userIP)
         std::cerr << "Error: " << e.what() << std::endl;
     }
     return coord;
+}
+
+intercardinalQueryResult APIHandler::checkIntercardinalCoords(const Coordinate& coord, double step)
+{
+    // Diagonal directions need a special step to be the same distance as normal cardinal directions away from the central coordinate
+    double diagonalStep = step / std::sqrt(2);
+
+    Coordinate N = Coordinate(coord.latitude + step, coord.longitude);
+    Coordinate NE = Coordinate(coord.latitude + diagonalStep, coord.longitude + diagonalStep);
+
+    Coordinate E = Coordinate(coord.latitude, coord.longitude + step);
+    Coordinate SE = Coordinate(coord.latitude - diagonalStep, coord.longitude + diagonalStep);
+
+    Coordinate S = Coordinate(coord.latitude - step, coord.longitude);
+    Coordinate SW = Coordinate(coord.latitude - diagonalStep, coord.longitude - diagonalStep);
+
+    Coordinate W = Coordinate(coord.latitude, coord.longitude - step);
+    Coordinate NW = Coordinate(coord.latitude + diagonalStep, coord.longitude - diagonalStep);
+
+    return checkIntercardinalCoords(N, NE, E, SE, S, SW, W, NW);
+}
+
+
+intercardinalQueryResult APIHandler::checkIntercardinalCoords(const Coordinate& N, const Coordinate& NE, const Coordinate& E, const Coordinate& SE, const Coordinate& S, const Coordinate& SW, const Coordinate& W, const Coordinate& NW)
+{
+    intercardinalQueryResult result = intercardinalQueryResult();
+    LocationInfo info = LocationInfo();
+
+    // Place function inputs into an array so that the rest of this function may be performed in a loop, avoiding unnecessary code
+    std::array<Coordinate, 8> coords = {N, NE, E, SE, S, SW, W, NW};
+
+    for (const auto& coord : coords)
+    {
+        info = checkCoordinatesForRain(coord);
+        result.locations.push_back(info);
+
+        if(info.isRaining)
+        {
+            result.isRainFound = true;
+            std::cout << "Found rain at " << info.coordinates.latitude << "* N, " << info.coordinates.longitude << "* E" << std::endl; 
+            // TODO Possibly break here and skip checking other points
+        }
+    }
+    return result;
 }

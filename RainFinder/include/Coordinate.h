@@ -2,20 +2,21 @@
 
 struct Coordinate 
 {
-    double longitude;
-    double latitude;
-
+    
+    double latitude; // How north/south. North is positive.
+    double longitude; // How east/west. East is positive. 
+    
     // Default constructor
     Coordinate()
-        : longitude(0.0),
-          latitude(0.0)
+        : latitude(0.0),
+          longitude(0.0)
           {
           }
     
     // Parameterized constructor
-    Coordinate (double lon, double lat)
-        : longitude(lon),
-          latitude(lat)
+    Coordinate (double lat, double lon)
+        : latitude(lat),
+          longitude(lon)
         {
         }
 };

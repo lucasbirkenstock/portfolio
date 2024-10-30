@@ -2,6 +2,8 @@
 #include "Coordinate.h"
 #include "LocationInfo.h"
 #include "nlohmann.h"
+#include "resultInfo.h"
+#include "CoordinateCalculator.h"
 #include "intercardinalQueryResult.h"
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -65,4 +67,7 @@ class APIHandler
     * indicating if any of the intercardinal coordinates have rain present. Returns the first struct to contain rain, and if no rain is found, returns the outermost struct.
     */
     intercardinalQueryResult checkRadius(const Coordinate& center, const double radius);
+
+    
+    resultInfo findRain(const Coordinate& center, const double radius);
 };

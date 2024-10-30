@@ -65,19 +65,19 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
             {
                 info.isRaining = false;
             }
-            std::cout << std::endl << "Weather type is " << info.weatherType << ", specifically " << info.weatherDescription << std::endl;
+            //std::cout << std::endl << "Weather type is " << info.weatherType << ", specifically " << info.weatherDescription << std::endl;
         }
 
         if (jsonResp.contains("main") && !jsonResp["main"].empty())
         {
             info.temperature = jsonResp["main"]["temp"];
-            std::cout << "Temp is: " << info.temperature << std::endl; 
+            //std::cout << "Temp is: " << info.temperature << std::endl; 
         }
 
         if (jsonResp.contains("coord") && !jsonResp["coord"].empty())
         {
-            info.coordinates = Coordinate(jsonResp["coord"]["lon"], jsonResp["coord"]["lat"]);
-            std::cout << "Coordinates are: Lon = " << info.coordinates.longitude << ", Lat = " << info.coordinates.latitude << std::endl;
+            info.coordinates = Coordinate(jsonResp["coord"]["lat"], jsonResp["coord"]["lon"]);
+            //std::cout << "Coordinates are: Lon = " << info.coordinates.longitude << ", Lat = " << info.coordinates.latitude << std::endl;
         }
 
         if (jsonResp.contains("name"))
@@ -91,7 +91,7 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
                 info.cityName = jsonResp["name"];
             }
 
-            std::cout << "The city of : " << info.cityName << std::endl;
+            //std::cout << "The city of : " << info.cityName << std::endl;
         }
 
 
@@ -110,7 +110,7 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
 
     } catch (const std::exception& e)
     {
-        std::cerr << "Error: " << e.what() << std::endl;
+        //std::cerr << "Error: " << e.what() << std::endl;
     }
     return info;
 }
@@ -234,6 +234,7 @@ intercardinalQueryResult APIHandler::checkRadius(const Coordinate& center, const
 
     for (int i = 0; i < 7; ++i)
     {
+        std::cout << "Checking subradius " << i << std::endl;
         result = checkIntercardinalCoords(center, currentDistance);
         if (result.isRainFound)
         {
@@ -241,9 +242,60 @@ intercardinalQueryResult APIHandler::checkRadius(const Coordinate& center, const
         } 
         else 
         {
+            
             currentDistance += radiusStep;
+            std::cout << currentDistance <<std::endl;
         }
     }
+    std::cout << "checkRadius() no rain found" <<std::endl;
     // If no rain found: return furthest step
     return result;
+}
+
+resultInfo APIHandler::findRain(const Coordinate& center, const double radius)
+{
+    resultInfo result = resultInfo();
+    std::cout << "Enter findRain()" << std::endl;
+    // First check center coordinate for rain
+    LocationInfo centerInfo = checkCoordinatesForRain(center);
+    if (centerInfo.isRaining)
+    {
+        // Return center coordinate
+        result.direction = "None";
+        result.info = centerInfo;
+        result.milesFromCenter = 0.0;
+        std::cout << "Found rain at your coordinates! Look outside!" << std::endl;
+        return result;
+    }
+
+    std::cout << "Not found at center" << std::endl;
+
+    // Check multiple intercardinal coordinates within radius
+    intercardinalQueryResult intercardinalResult = intercardinalQueryResult();
+    intercardinalResult = checkRadius(center, radius);
+    if (intercardinalResult.isRainFound)
+    {
+        // Loop through and find the first Locationinfo struct containing rain.
+        for (const auto& info : intercardinalResult.locations)
+        {
+            std::cout << "Checking a locationInfo" << std::endl;
+            if (info.isRaining)
+            {
+                result.direction = CoordinateCalculator::determineDirection(center, info.coordinates);
+                result.info = info;
+                result.milesFromCenter = CoordinateCalculator::calculateDistance(center, info.coordinates);
+                std::cout << "Found rain " << result.milesFromCenter << " miles away from your coordinates, in the " << result.direction << " direction." << std::endl;
+                return result;
+            }
+        }
+    }
+
+    std::cout << "Not found within radius" << std::endl;
+
+    // If no rain is found
+    result.direction = "No rain found";
+    result.info = LocationInfo();
+    result.milesFromCenter = -1;
+    return result;
+
 }

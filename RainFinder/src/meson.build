@@ -2,7 +2,8 @@
 src_files = files(
     'main.cpp',
     'HTTPController.cpp',
-    'APIHandler.cpp'
+    'APIHandler.cpp',
+    'CoordinateCalculator.cpp'
 )
 
 # Create executable

@@ -6,4 +6,10 @@ struct intercardinalQueryResult
 {
     std::vector<LocationInfo> locations;
     bool isRainFound = false;
+
+    // Default constructor
+    intercardinalQueryResult()
+        : locations{}
+        {
+        }
 };

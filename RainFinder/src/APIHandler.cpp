@@ -224,3 +224,26 @@ intercardinalQueryResult APIHandler::checkIntercardinalCoords(const Coordinate& 
     }
     return result;
 }
+
+intercardinalQueryResult APIHandler::checkRadius(const Coordinate& center, const double radius)
+{
+    // Get 60 API calls/min for free, checkRadius should use 60 calls or less. Each intercardinal check uses 8 calls.
+    double radiusStep = radius / 7;
+    double currentDistance = radius / 7;
+    intercardinalQueryResult result = intercardinalQueryResult();
+
+    for (int i = 0; i < 7; ++i)
+    {
+        result = checkIntercardinalCoords(center, currentDistance);
+        if (result.isRainFound)
+        {
+            return result;
+        } 
+        else 
+        {
+            currentDistance += radiusStep;
+        }
+    }
+    // If no rain found: return furthest step
+    return result;
+}

@@ -38,7 +38,8 @@ class APIHandler
     * @brief Calls overloaded function to check each intercardinal direction from the center coordinate for rain. 
     * @param[in] coord Center coordinate.
     * @param[in] step Distance away from the center coordinate to check. 
-    * @return    intercardinalQueryResult struct - contains vector of LocationInfo structs and a boolean indicating if any intercardinal coordinate has rain present.
+    * @return    intercardinalQueryResult struct - struct containing a vector of LocationInfo structs and a boolean 
+    * indicating if any of the intercardinal coordinates have rain present.
     */
     intercardinalQueryResult checkIntercardinalCoords(const Coordinate& coord, double step);
 
@@ -52,7 +53,16 @@ class APIHandler
     * @param[in] SW Coordinate southwest of the central coordinate. 
     * @param[in] W Coordinate west of the central coordinate.
     * @param[in] NW Coordinate northwest of the central coordinate. 
-    * @return    intercardinalQueryResult struct - contains vector of LocationInfo structs and a boolean indicating if any intercardinal coordinate has rain present.
+    * @return    intercardinalQueryResult struct - struct containing a vector of LocationInfo structs and a boolean 
+    * indicating if any of the intercardinal coordinates have rain present.
     */
     intercardinalQueryResult checkIntercardinalCoords(const Coordinate& N, const Coordinate& NE, const Coordinate& E, const Coordinate& SE, const Coordinate& S, const Coordinate& SW, const Coordinate& W, const Coordinate& NW);
+    /*!
+    @brief Calls checkIntercardinalCoords() with several radius distances from the center coordinate, within a specified radius
+    @param[in] center The center coordinate
+    @param[in] radius The outermost radius for checked coordinates
+    @return intercardinalQueryResult - intercardinalQueryResult struct - struct containing a vector of LocationInfo structs and a boolean 
+    * indicating if any of the intercardinal coordinates have rain present. Returns the first struct to contain rain, and if no rain is found, returns the outermost struct.
+    */
+    intercardinalQueryResult checkRadius(const Coordinate& center, const double radius);
 };

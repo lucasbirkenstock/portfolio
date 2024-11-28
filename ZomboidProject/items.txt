@@ -1,0 +1,170 @@
+const items = [
+    { 
+        id: 'fireofficer', 
+        OccupationName: "Fire Officer", 
+        OccupationTraits: "+1 Axe (skill)\n+1 Fitness\n+1 Sprinting\n+1 Strength", 
+        StartingPoints: "0", 
+        pointColor : "green",
+        image: require('./imgs/occupations/fireofficer.png') 
+    },
+    { 
+        id: 'policeofficer', 
+        OccupationName: "Police Officer", 
+        OccupationTraits: "+3 Aiming\n+1 Nimble\n+2 Reloading", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/policeofficer.png') 
+    },
+    { 
+        id: 'parkranger', 
+        OccupationName: "Park Ranger", 
+        OccupationTraits: "+1 Axe (skill)\n+1 Carpentry\n+2 Foraging\n+2 Trapping", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/parkranger.png') 
+    },
+    { 
+        id: 'constructionworker', 
+        OccupationName: "Construction Worker", 
+        OccupationTraits: "+1 Carpentry\n+3 Short Blunt", 
+        StartingPoints: "-2", 
+        pointColor : "red",
+        image: require('./imgs/occupations/constructionworker.png') 
+    },
+    { 
+        id: 'securityguard', 
+        OccupationName: "Security Guard", 
+        OccupationTraits: "+1 Lightfooted\n+2 Sprinting\nNight Owl", 
+        StartingPoints: "-2", 
+        pointColor : "red",
+        image: require('./imgs/occupations/securityguard.png') 
+    },
+    { 
+        id: 'carpenter', 
+        OccupationName: "Carpenter", 
+        OccupationTraits: "+3 Carpentry\n+1 Short Blunt", 
+        StartingPoints: "2", 
+        pointColor : "green",
+        image: require('./imgs/occupations/carpenter.png') 
+    },
+    { 
+        id: 'burglar', 
+        OccupationName: "Burglar", 
+        OccupationTraits: "+2 Lightfooted\n+2 Nimble\n+2 Sneaking\nBurglar", 
+        StartingPoints: "-6", 
+        pointColor : "red",
+        image: require('./imgs/occupations/burglar.png') 
+    },
+    { 
+        id: 'chef', 
+        OccupationName: "Chef", 
+        OccupationTraits: "+3 Cooking\n+1 Maintenance\n+1 Short Blade\nCook", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/chef.png') 
+    },
+    { 
+        id: 'repairman', 
+        OccupationName: "Repairman", 
+        OccupationTraits: "+1 Carpentry\n+2 Maintenance\n+1 Short Blunt", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/repairman.png') 
+    },
+    { 
+        id: 'farmer', 
+        OccupationName: "Farmer", 
+        OccupationTraits: "+3 Farming", 
+        StartingPoints: "2", 
+        pointColor : "green",
+        image: require('./imgs/occupations/farmer.png') 
+    },
+    { 
+        id: 'fisherman', 
+        OccupationName: "Fisherman", 
+        OccupationTraits: "+3 Fishing\n+1 Foraging", 
+        StartingPoints: "-2", 
+        pointColor : "red",
+        image: require('./imgs/occupations/fisherman.png') 
+    },
+    { 
+        id: 'doctor', 
+        OccupationName: "Doctor", 
+        OccupationTraits: "+3 First Aid\n+1 Short Blade", 
+        StartingPoints: "2", 
+        pointColor : "green",
+        image: require('./imgs/occupations/doctor.png') 
+    },
+    { 
+        id: 'veteran', 
+        OccupationName: "Veteran", 
+        OccupationTraits: "+2 Aiming\n+2 Reloading\nDesensitized", 
+        StartingPoints: "-8", 
+        pointColor : "red",
+        image: require('./imgs/occupations/veteran.png') 
+    },
+    { 
+        id: 'nurse', 
+        OccupationName: "Nurse", 
+        OccupationTraits: "+2 First Aid\n+1 Lightfooted", 
+        StartingPoints: "2", 
+        pointColor : "green",
+        image: require('./imgs/occupations/nurse.png') 
+    },
+    { 
+        id: 'lumberjack', 
+        OccupationName: "Lumberjack", 
+        OccupationTraits: "+2 Axe (skill)\n+1 Strength\nAxe Man", 
+        StartingPoints: "0", 
+        pointColor : "green",
+        image: require('./imgs/occupations/lumberjack.png') 
+    },
+    { 
+        id: 'trainer', 
+        OccupationName: "Fitness Instructor", 
+        OccupationTraits: "+3 Fitness\n+2 Sprinting\nNutritionist", 
+        StartingPoints: "-6", 
+        pointColor : "red",
+        image: require('./imgs/occupations/trainer.png') 
+    },
+    { 
+        id: 'burgerflipper', 
+        OccupationName: "Burger Flipper", 
+        OccupationTraits: "+2 Cooking\n+1 Maintenance\n+1 Short Blade\nCook", 
+        StartingPoints: "2", 
+        pointColor : "green",
+        image: require('./imgs/occupations/burgerflipper.png') 
+    },
+    { 
+        id: 'electrician', 
+        OccupationName: "Electrician", 
+        OccupationTraits: "+3 Electrical\nCan operate generators", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/electrician.png') 
+    },
+    { 
+        id: 'engineer', 
+        OccupationName: "Engineer", 
+        OccupationTraits: "+1 Carpentry\n+1 Electrical", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/engineer.png') 
+    },
+    { 
+        id: 'metalworker', 
+        OccupationName: "Metalworker", 
+        OccupationTraits: "+3 Metalworking\nCan weld foraged metal to create items and barricades", 
+        StartingPoints: "-6", 
+        pointColor : "red",
+        image: require('./imgs/occupations/metalworker.png') 
+    },
+    { 
+        id: 'mechanic', 
+        OccupationName: "Mechanic", 
+        OccupationTraits: "+3 Mechanics\n+1 Short Blunt\nAmateur Mechanic", 
+        StartingPoints: "-4", 
+        pointColor : "red",
+        image: require('./imgs/occupations/mechanic.png') 
+    },
+  ];

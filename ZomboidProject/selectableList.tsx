@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-// Define the type for each item in the list
 interface Item {
   id: string;
   OccupationName: string;
@@ -218,13 +217,12 @@ const SelectableList: React.FC<SelectableListProps> = ({ onSelectItem }) => {
       image: require('./imgs/occupations/mechanic.png'),
       isSelected : false  
   },
-    // Add the rest of the items here with isSelected set to false
   ]);
 
   const handleSelectItem = (item: Item) => {
     // If the clicked item is already selected, we reset the selection (deselect it)
     if (selectedItemId === item.id) {
-      setSelectedItemId(null);  // Deselect
+      setSelectedItemId(null);  
       setItems(prevItems => 
         prevItems.map(currentItem => 
           currentItem.id === item.id ? { ...currentItem, isSelected: false } : currentItem
@@ -238,8 +236,8 @@ const SelectableList: React.FC<SelectableListProps> = ({ onSelectItem }) => {
     setItems(prevItems => 
       prevItems.map(currentItem => 
         currentItem.id === item.id
-          ? { ...currentItem, isSelected: true }  // Select the clicked item
-          : { ...currentItem, isSelected: false } // Deselect all other items
+          ? { ...currentItem, isSelected: true }  
+          : { ...currentItem, isSelected: false } 
       )
     );
 
@@ -282,7 +280,7 @@ const SelectableList: React.FC<SelectableListProps> = ({ onSelectItem }) => {
             <View> 
               {item.isSelected && (
                 <Image
-                  source={require('./imgs/bloodyCheckmark.png')} // Your checkmark image here
+                  source={require('./imgs/bloodyCheckmark.png')} 
                   style={{ width: 20, height: 20, marginLeft: 10 }}
                 />
               )}

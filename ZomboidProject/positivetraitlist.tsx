@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-// Define the type for each item in the list
 export interface Trait {
   id: string;
   TraitName: string;
   TraitDescription: string;
   StartingPoints: string;
   pointColor: string;
-  image: any; // Change this to the appropriate type if needed (e.g., ImageSourcePropType)
+  image: any; 
   isSelected : boolean;
 }
 
 // Define the props for the PositiveTraitList component
 interface PositiveTraitListProps {
-  onSelectItem: (item: Trait) => void; // onSelectItem function that accepts an item of type Item
+  onSelectItem: (item: Trait) => void; 
 }
 
 const PositiveTraitList: React.FC<PositiveTraitListProps> = ({ onSelectItem }) => {
@@ -402,7 +401,7 @@ const PositiveTraitList: React.FC<PositiveTraitListProps> = ({ onSelectItem }) =
         return [...prevselectedPositiveTraits, item.id];
       }
     });
-    onSelectItem(item); // Pass selected item details to parent component
+    onSelectItem(item); 
   };
 
   return (

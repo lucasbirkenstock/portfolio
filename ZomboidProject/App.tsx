@@ -15,7 +15,7 @@ const App = () => {
         return;
       }
       sound.setNumberOfLoops(-1); // Loop sound indefinitely
-      sound.play();               // Start playing sound
+      sound.play();               
     });
   }
   
@@ -41,14 +41,14 @@ const App = () => {
     setPage('BuildDetails');
   };
 
-  // State to track the current page (Home, Details, etc.)
+  // State to track the current page 
   const [page, setPage] = useState('Home');
 
   // Track if an occupation is selected or not
   const [isOccupationSelected, setIsOccupationSelected] = useState(false);
   
   // State to store the selected item details
-  const [selectedItem, setSelectedItem] = useState<any>(null); // Store the selected item details here
+  const [selectedItem, setSelectedItem] = useState<any>(null); 
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null); // Track selected occupation ID
   
   const contradictoryTraits: { [key: string]: string[] } = {
@@ -94,7 +94,6 @@ const App = () => {
     "feeble" : ["weak", "strong", "stout"],
     "claustrophobic" : ["agoraphobic"],
     "agoraphobic" : ["claustrophobic"]
-    // Add other contradictory trait pairs here
   };
 
   // Track points
@@ -142,7 +141,7 @@ const App = () => {
     setCharacterPoints(prevPoints => {
       // Remove effect of the last selected occupation
       const updatedPoints = prevPoints - (lastOccupationPoints ?? 0) + parseInt(item.StartingPoints);
-      setIsOccupationSelected(true); // Update to true when an item is selected
+      setIsOccupationSelected(true); 
       // Update lastOccupationPoints for next selection
       setLastOccupationPoints(parseInt(item.StartingPoints));
       
@@ -191,8 +190,8 @@ const App = () => {
       {page === 'Home' ? (
         <ImageBackground 
           source={require('./imgs/background.png')} 
-          style={styles.background}  // Sets the image to cover the entire screen
-          resizeMode="cover"         // Ensures the image scales properly
+          style={styles.background}  
+          resizeMode="cover"         
         >
             <View style={styles.bottomButtonContainer}>
               <View style={styles.leftButton}>
@@ -310,9 +309,9 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   background: {
-    flex: 1,                     // Ensures the background covers the entire screen
-    justifyContent: 'center',     // Centers content vertically
-    alignItems: 'center',         // Centers content horizontally
+    flex: 1,              
+    justifyContent: 'center',     
+    alignItems: 'center',         
   },
   bottomButtonContainer: {
     bottom: 20,
@@ -390,9 +389,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
     reviewPageTraits: {
-    flexDirection: 'row', // Align image and text side by side
-    alignItems: 'center', // Center align items vertically
-    marginBottom: 10, // Space between each trait
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 10, 
   }
 });
 

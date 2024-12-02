@@ -5,21 +5,38 @@ import PositiveTraitList, {Trait} from './positivetraitlist';
 import NegativeTraitList from './negativetraitlist';
 import Sound from 'react-native-sound';
 
-let sound: undefined;
+let backgroundSound : Sound | null = null;
+let introductionSound: Sound | null = null;
+let pageflip : Sound | null = null;
+
 const App = () => {
  
-  if (!sound) {
-    sound = new Sound('theme.mp3', Sound.MAIN_BUNDLE, (error) => {
+  if (!backgroundSound) {
+    backgroundSound = new Sound('theme.mp3', Sound.MAIN_BUNDLE, (error) => {
       if (error) {
         console.log('Failed to load the sound', error);
         return;
       }
-      sound.setNumberOfLoops(-1); // Loop sound indefinitely
-      sound.play();               
+      backgroundSound.setNumberOfLoops(-1); // Loop sound indefinitely
+      backgroundSound.play();               
     });
   }
   
 
+  const playSoundEffect = (fileName: string) => {
+    // Create a new Sound instance for introduction.mp3 each time it's played
+    introductionSound = new Sound(fileName, Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('Failed to load the introduction sound', error);
+        return;
+      }
+      introductionSound.play(() => {
+        introductionSound.release(); // Release the sound once it's finished playing
+      });
+    });
+  };
+
+  
 
   interface Build 
   {
@@ -43,6 +60,36 @@ const App = () => {
 
   // State to track the current page 
   const [page, setPage] = useState('Home');
+
+
+  useEffect(() => {
+    const pageflip = new Sound('pageflip.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('Failed to load the pageflip sound', error);
+        return;
+      }
+      pageflip.play(() => {
+        pageflip.release(); 
+      });
+    });
+    
+    return () => {
+      pageflip.release();
+    };
+  }, [page]);
+    
+  useEffect(() => {
+    if (page === 'ReviewBuild') {
+      playSoundEffect('introduction.mp3'); 
+    } else {
+      if (introductionSound) {
+        introductionSound.stop(() => {
+          introductionSound?.release(); 
+        });
+        introductionSound = null; 
+      }
+    }
+  }, [page]); 
 
   // Track if an occupation is selected or not
   const [isOccupationSelected, setIsOccupationSelected] = useState(false);
@@ -181,8 +228,6 @@ const App = () => {
   });
 };
 
-
-
   return (
   
     <SafeAreaView style={styles.container}>
@@ -207,8 +252,6 @@ const App = () => {
           <Text> Current Character Points: {characterPoints} </Text>
           {/* Pass the handleSelectItem function to SelectableList */}
           <SelectableList onSelectItem={handleSelectItem} />
-
-          
 
           <View style={styles.bottomButtonContainer}>
             <Button color="gray" title="Go Back" onPress={() => setPage('Home')} />
@@ -290,8 +333,6 @@ const App = () => {
         </View>
       ): (
         <View> 
-          
-
         </View>
       )}
     </SafeAreaView>

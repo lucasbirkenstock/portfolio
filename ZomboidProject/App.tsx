@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    marginHorizontal: 16,
+    backgroundColor: '#D3D3D3'  
   },
   title: {
     textAlign: 'center',
@@ -352,7 +352,8 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,              
     justifyContent: 'center',     
-    alignItems: 'center',         
+    alignItems: 'center',    
+       
   },
   bottomButtonContainer: {
     bottom: 20,
@@ -410,7 +411,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#ccc',
+    borderColor: 'black',
   },
   buildTitle: {
     fontSize: 18,

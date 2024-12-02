@@ -361,7 +361,7 @@ const NegativeTraitList: React.FC<NegativeTraitListProps> = ({ onSelectItem }) =
             key={item.id}
             style={[
               styles.item,
-              { backgroundColor: selectedNegativeTraits.includes(item.id) ? '#007bff' : 'lightgray' },
+              { backgroundColor: selectedNegativeTraits.includes(item.id) ? '#5f5963' : 'lightgray' },
             ]}
             onPress={() => handleSelectItem(item)}
           >
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 5,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'flex-start',
     borderRadius: 5,

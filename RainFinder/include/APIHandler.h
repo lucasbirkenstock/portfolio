@@ -17,7 +17,7 @@
 
 class APIHandler
 {
-    public:
+    private:
     // Temporary: API key. Intentionally leaving string empty for git pushes. 
     std::string m_OpenweatherApiKey = "";
 
@@ -68,6 +68,12 @@ class APIHandler
     */
     intercardinalQueryResult checkRadius(const Coordinate& center, const double radius);
 
-    
+
+    public:
+    /*!
+    @brief Main client function called to check a set of coordinates for rain. 
+    @param[in] center The center coordinate
+    @param[in] radius The maximum radius around the center coordinate to check the weather of. Unit is degrees. 
+    */
     resultInfo findRain(const Coordinate& center, const double radius);
 };

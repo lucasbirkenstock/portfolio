@@ -18,8 +18,8 @@
 class APIHandler
 {
     public:
-    // Temporary: API key
-    std::string m_apiKey = "";
+    // Temporary: API key. Intentionally leaving string empty for git pushes. 
+    std::string m_OpenweatherApiKey = "";
 
     /*!
     * @brief Makes API request to IP-API to convert user's IP to GPS coordinates

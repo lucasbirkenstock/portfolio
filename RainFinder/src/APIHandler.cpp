@@ -27,7 +27,7 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
         // Format GET request
         std::string lat = std::to_string(coords.latitude);
         std::string lon = std::to_string(coords.longitude);
-        std::string target = "/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + m_apiKey + "&units=imperial";
+        std::string target = "/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + m_OpenweatherApiKey + "&units=imperial";
         
         boost::beast::http::request<boost::beast::http::string_body> req{boost::beast::http::verb::get, target, 11};
         req.set(boost::beast::http::field::host, "api.openweathermap.org");
@@ -92,6 +92,11 @@ LocationInfo APIHandler::checkCoordinatesForRain(const Coordinate &coords)
             }
 
             //std::cout << "The city of : " << info.cityName << std::endl;
+        }
+
+        if (jsonResp.contains("sys") && !jsonResp["sys"].empty())
+        {
+            info.countryCode = jsonResp["sys"]["country"];
         }
 
 
@@ -258,6 +263,9 @@ resultInfo APIHandler::findRain(const Coordinate& center, const double radius)
     std::cout << "Enter findRain()" << std::endl;
     // First check center coordinate for rain
     LocationInfo centerInfo = checkCoordinatesForRain(center);
+
+    std::cout << "Checking area around " << centerInfo.cityName << ", " << centerInfo.countryCode << ". Exact center coordinates: " << center.latitude << " degrees North, " << center.longitude << " degrees West" << std::endl;
+    
     if (centerInfo.isRaining)
     {
         // Return center coordinate

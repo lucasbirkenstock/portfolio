@@ -13,7 +13,7 @@ APIHandler handler = APIHandler();
 //Coordinate csusm = Coordinate(-117.1587, 33.1298);
 Coordinate portoAlegre = Coordinate(-30.0368, -51.2090);
 Coordinate saoPaulo = Coordinate(-23.5558, -46.6396);
-Coordinate nearbyRainCoord = Coordinate(40.5169, -101.6432);
+Coordinate nearbyRainCoord = Coordinate(40.5187, -78.3947);
 // handler.checkCoordinatesForRain(portoAlegre);
 
 //handler.checkCoordinatesForRain(handler.getCoordinatesFromIP("127.0.0.1"));
